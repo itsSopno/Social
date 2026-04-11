@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import MagneticCard from "@/components/Community/MagneticCard";
-import { MessageSquare, Heart, Share2, MoreHorizontal, Image as ImageIcon, Loader2, X, Send } from "lucide-react";
+import { MessageSquare, Heart, Share2, MoreHorizontal, Image as ImageIcon, Loader2, X, Send, UserPlus, UserCheck } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -49,7 +49,7 @@ export default function CommunityPage() {
   const [commentingId, setCommentingId] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { allUsers, socket } = useGlobalContext()
+  const { allUsers, socket, userData, sendFriendRequest } = useGlobalContext()
   const currentUserData = allUsers?.find(
     (user: any) => user.email === session?.user?.email
   );
@@ -352,15 +352,33 @@ export default function CommunityPage() {
                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-[2px] border-[#050505]" />
                   </div>
                   <div>
-                    <h3 className="font-bebas text-lg md:text-xl tracking-[2px] text-white leading-none flex items-center gap-3">
-                      {post.author?.username || "Anonymous_Node"}
-                      <span className="font-jetbrains-mono text-[9px] px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 tracking-widest uppercase italic">
-                        {post.author?.email === 'nabailahmed303@gmail.com' ? 'CORE_SEC' : 'UPLINK_NODE'}
-                      </span>
-                    </h3>
-                    <p className="font-jetbrains-mono text-[9px] text-white/30 uppercase mt-1">
-                      {new Date(post.createdAt).toLocaleDateString([], { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <h3 className="font-bebas text-lg md:text-xl tracking-[2px] text-white leading-none">
+                        {post.author?.username || "Anonymous_Node"}
+                      </h3>
+                      {/* Friend Request Button */}
+                      {session?.user?.email !== post.author?.email && (
+                        <button
+                          onClick={() => sendFriendRequest(post.author.email)}
+                          className="transition-all"
+                          title={userData?.friends?.includes(post.author.email) ? "Synchronized" : "Request Uplink"}
+                        >
+                          {userData?.friends?.includes(post.author.email) ? (
+                            <UserCheck size={14} className="text-[#D9FF00]" />
+                          ) : (
+                            <UserPlus size={14} className="text-white/40 hover:text-white" />
+                          )}
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                       <span className="font-jetbrains-mono text-[9px] px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 tracking-widest uppercase italic">
+                          {post.author?.email === 'nabailahmed303@gmail.com' ? 'CORE_SEC' : 'UPLINK_NODE'}
+                       </span>
+                       <p className="font-jetbrains-mono text-[9px] text-white/30 uppercase">
+                         {new Date(post.createdAt).toLocaleDateString([], { month: 'short', day: '2-digit' })}
+                       </p>
+                    </div>
                   </div>
                 </div>
 

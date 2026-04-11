@@ -1,16 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Check, Trash2, X } from "lucide-react";
+import { Bell, Check, Trash2, X, UserPlus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGlobalContext } from "@/context/globalContext";
-import styles from "./Community.module.scss"; // Optional, utilizing existing styles or inline
+import styles from "./Community.module.scss"; 
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 
 export const NotificationBell = () => {
-    const { notifications, markNotificationsRead, unreadCount } = useGlobalContext();
+    const { 
+        notifications, 
+        markNotificationsRead, 
+        unreadCount, 
+        userData, 
+        acceptFriendRequest, 
+        rejectFriendRequest 
+    } = useGlobalContext();
     const [isOpen, setIsOpen] = useState(false);
+
+    const pendingRequests = userData?.friendRequests?.filter(r => r.status === "pending") || [];
+    const totalUnread = unreadCount + pendingRequests.length;
 
     return (
         <div className="relative z-50">
@@ -27,7 +37,7 @@ export const NotificationBell = () => {
                 
                 {/* Badge Status */}
                 <AnimatePresence>
-                    {unreadCount > 0 && (
+                    {totalUnread > 0 && (
                         <motion.span
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -56,7 +66,42 @@ export const NotificationBell = () => {
                         </div>
                         
                         <div className="max-h-[400px] overflow-y-auto no-scrollbar">
-                            {notifications.length === 0 ? (
+                            {/* Friend Requests Section */}
+                            {pendingRequests.length > 0 && (
+                                <div className="border-b border-white/10 bg-[#D9FF00]/5">
+                                    <div className="p-3">
+                                        <p className="text-[10px] font-jetbrains-mono text-[#D9FF00] uppercase tracking-widest mb-3 px-1">Uplink Requests</p>
+                                        <div className="space-y-2">
+                                            {pendingRequests.map((req, idx) => (
+                                                <div key={idx} className="flex items-center justify-between p-2 bg-white/5 rounded-xl border border-white/10">
+                                                    <div className="flex items-center gap-2 overflow-hidden">
+                                                        <div className="p-1.5 bg-white/5 rounded-lg shrink-0">
+                                                            <UserPlus size={14} className="text-[#D9FF00]" />
+                                                        </div>
+                                                        <span className="text-white text-xs truncate font-jetbrains-mono">{req.from}</span>
+                                                    </div>
+                                                    <div className="flex gap-1 ml-2">
+                                                        <button 
+                                                            onClick={() => acceptFriendRequest(req.from)}
+                                                            className="p-1.5 hover:bg-[#D9FF00] hover:text-black rounded-lg transition-colors text-white/40"
+                                                        >
+                                                            <Check size={14} />
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => rejectFriendRequest(req.from)}
+                                                            className="p-1.5 hover:bg-red-500 hover:text-white rounded-lg transition-colors text-white/40"
+                                                        >
+                                                            <X size={14} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {notifications.length === 0 && pendingRequests.length === 0 ? (
                                 <div className="p-8 text-center text-white/40 font-jetbrains-mono text-xs">
                                     No incoming transmissions.
                                 </div>

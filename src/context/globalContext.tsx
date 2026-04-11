@@ -5,6 +5,12 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 // Define the User Data Interface (matching backend UserDataModel)
+export interface IFriendRequest {
+    from: string;
+    status: "pending" | "accepted" | "rejected";
+    createdAt: Date;
+}
+
 export interface IUserData {
     _id?: string;
     userId: string;
@@ -15,6 +21,8 @@ export interface IUserData {
     address: string;
     image: string;
     Bio: string;
+    friends: string[];
+    friendRequests: IFriendRequest[];
     createdAt?: string;
     updatedAt?: string;
 }
@@ -35,6 +43,11 @@ interface GlobalContextType {
     fetchNotifications: (email: string) => Promise<void>;
     markNotificationsRead: () => Promise<void>;
     socket: Socket | null;
+
+    // Friendship Additions
+    sendFriendRequest: (receiverEmail: string) => Promise<void>;
+    acceptFriendRequest: (senderEmail: string) => Promise<void>;
+    rejectFriendRequest: (senderEmail: string) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -158,6 +171,71 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [session, status]);
 
+    // Friendship Handlers
+    const sendFriendRequest = async (receiverEmail: string) => {
+        if (!session?.user?.email) return;
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/friend/request/send`, {
+                senderEmail: session.user.email,
+                receiverEmail
+            });
+            if (res.data.success) {
+                toast.success("Uplink Requested", { description: "Friend request sent successfully." });
+                // Emit socket for real-time alert
+                socket?.emit("send-notification", {
+                    recipientId: receiverEmail,
+                    senderId: session.user.email,
+                    type: "LIKE", 
+                    title: "New Friend Request",
+                    content: `${userData?.name || "A user"} wants to be your friend.`
+                });
+            }
+        } catch (err: any) {
+            toast.error("Uplink Failed", { description: err.response?.data?.message || "Signal lost" });
+        }
+    };
+
+    const acceptFriendRequest = async (senderEmail: string) => {
+        if (!session?.user?.email) return;
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/friend/request/accept`, {
+                userEmail: session.user.email,
+                senderEmail
+            });
+            if (res.data.success) {
+                toast.success("Synchronized", { description: "Friend request accepted." });
+                refreshUserData();
+                // Emit socket for real-time alert
+                socket?.emit("send-notification", {
+                    recipientId: senderEmail,
+                    senderId: session.user.email,
+                    type: "COMMENT",
+                    title: "Request Accepted",
+                    content: `${userData?.name || "A user"} accepted your friend request.`
+                });
+            }
+        } catch (err: any) {
+            toast.error("Sync Failed", { description: "Could not establish connection." });
+        }
+    };
+
+    const rejectFriendRequest = async (senderEmail: string) => {
+        if (!session?.user?.email) return;
+        try {
+            await axios.post(`${BACKEND_URL}/api/friend/request/reject`, {
+                userEmail: session.user.email,
+                senderEmail
+            });
+            setUserData(prev => prev ? {
+                ...prev,
+                friendRequests: prev.friendRequests.filter(r => r.from !== senderEmail)
+            } : null);
+            toast.info("Terminal Rejected", { description: "Friend request removed." });
+        } catch (err: any) {
+            toast.error("Action Failed", { description: "Signal lost" });
+        }
+    };
+
     return (
         <GlobalContext.Provider
             value={{
@@ -173,7 +251,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 unreadCount,
                 fetchNotifications,
                 markNotificationsRead,
-                socket
+                socket,
+                sendFriendRequest,
+                acceptFriendRequest,
+                rejectFriendRequest
             }}
         >
             {children}
