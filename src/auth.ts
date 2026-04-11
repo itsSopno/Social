@@ -1,8 +1,13 @@
 import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Credentials({
       name: "Credentials",
       credentials: {
@@ -54,6 +59,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   secret: process.env.AUTH_SECRET,
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/google/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              googleId: account.providerAccountId,
+              name: user.name,
+              email: user.email,
+              image: user.image || "",
+            }),
+          });
+        } catch (err) {
+          console.error("Failed to register/login google user in backend:", err);
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
