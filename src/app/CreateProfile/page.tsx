@@ -13,8 +13,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
-
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "https://t-mark-4.onrender.com";
 
@@ -37,7 +37,6 @@ export default function CreateProfilePage() {
         Bio: "",
     });
 
-    // Populate form with session data when loaded
     useEffect(() => {
         if (session?.user) {
             setFormData(prev => ({
@@ -119,10 +118,10 @@ export default function CreateProfilePage() {
 
     if (status === "loading") {
         return (
-            <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-12 h-12 text-[#D9FF00] animate-spin" />
-                    <p className="font-bebas text-2xl tracking-[0.2em] text-white/40 uppercase italic">Decrypting_Session...</p>
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="flex flex-col items-center gap-6">
+                    <Loader2 className="w-16 h-16 text-indigo-500 animate-spin" />
+                    <p className="font-bebas text-3xl tracking-[0.2em] text-muted-foreground uppercase italic">Decrypting_Session...</p>
                 </div>
             </div>
         );
@@ -130,12 +129,11 @@ export default function CreateProfilePage() {
 
     if (status === "unauthenticated") {
         return (
-            <div className="min-h-screen bg-[#050505] flex items-center justify-center px-6 relative overflow-hidden">
+            <div className="min-h-screen bg-background flex items-center justify-center px-6 relative overflow-hidden">
                 {/* Atmospheric Background */}
                 <div className="absolute inset-0 z-0">
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" />
-                    <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#D9FF00]/5 rounded-full blur-[120px] pointer-events-none" />
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] [mask-image:linear-gradient(to_bottom,white,transparent)] pointer-events-none" />
+                    <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
                 </div>
 
                 <motion.div 
@@ -144,37 +142,31 @@ export default function CreateProfilePage() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="max-w-lg w-full relative z-10"
                 >
-                    <div className="p-10 md:p-14 rounded-[30px] border border-white/5 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative overflow-hidden group">
-                        {/* Shimmer Effect */}
+                    <div className="p-10 md:p-14 rounded-[40px] border border-border bg-card/20 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
                         <div className="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />
                         
-                        <div className="text-center space-y-6">
-                            {/* Logo Representation */}
-                            <div className="w-16 h-16 mx-auto mb-8 relative">
-                                <div className="absolute inset-0 bg-[#D9FF00]/20 blur-xl rounded-full" />
-                                <div className="relative w-full h-full border border-white/10 rounded-2xl bg-[#0A0A0A] flex items-center justify-center transform rotate-3">
-                                    <h2 className="font-bebas text-3xl text-white tracking-widest italic -rotate-3">S<span className="text-[#D9FF00]">.</span></h2>
+                        <div className="text-center space-y-10">
+                            <div className="w-20 h-20 mx-auto relative">
+                                <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full" />
+                                <div className="relative w-full h-full border border-border rounded-2xl bg-muted/10 flex items-center justify-center transform rotate-3">
+                                    <h2 className="font-bebas text-4xl text-foreground tracking-widest italic -rotate-3">S<span className="text-indigo-500">.</span></h2>
                                 </div>
                             </div>
 
-                            <h1 className="font-bebas text-4xl md:text-5xl text-white tracking-[0.15em] uppercase">
-                                Global <span className="text-[#D9FF00] italic">Community</span>
+                            <h1 className="font-bebas text-5xl md:text-6xl text-foreground tracking-[0.1em] uppercase leading-none">
+                                Global <span className="text-indigo-500 italic">Community</span>
                             </h1>
                             
-                            <p className="font-jetbrains-mono text-xs text-white/40 uppercase tracking-[2px] leading-relaxed max-w-sm mx-auto">
-                                Synchronize your digital identity to access the high-performance circle.
+                            <p className="font-jetbrains-mono text-xs text-muted-foreground uppercase tracking-[3px] leading-relaxed max-w-sm mx-auto">
+                                Synchronize your digital identity to access the circle.
                             </p>
 
                             <div className="pt-8">
                                 <Link 
                                     href="/register"
-                                    className="relative w-full flex items-center justify-center gap-4 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-jetbrains-mono text-xs uppercase tracking-[0.2em] rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(217,255,0,0.1)] hover:border-[#D9FF00]/30 overflow-hidden"
+                                    className="relative w-full flex items-center justify-center gap-5 py-5 bg-foreground text-background hover:opacity-90 font-jetbrains-mono text-xs uppercase tracking-[0.3em] rounded-2xl transition-all duration-300"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-[#D9FF00]/0 via-[#D9FF00]/10 to-[#D9FF00]/0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                                    <svg viewBox="0 0 24 24" width="18" height="18" className="z-10">
-                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-                                    </svg>
-                                    <span className="z-10">Initiate Registration</span>
+                                    <span>Initiate Registration</span>
                                 </Link>
                             </div>
                         </div>
@@ -185,12 +177,12 @@ export default function CreateProfilePage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0A0A0A] pt-40 pb-20 px-6 overflow-x-hidden flex flex-col items-center">
+        <div className="min-h-screen bg-background pt-32 pb-20 px-6 flex flex-col items-center">
             <div className="w-full max-w-6xl">
                 <div className="mb-12">
-                    <Link href="/Community" className="inline-flex items-center gap-3 text-white/40 hover:text-[#D9FF00] transition-colors group">
-                        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-jetbrains-mono text-[10px] uppercase tracking-[4px]">Return_to_Comm_Link</span>
+                    <Link href="/Community" className="inline-flex items-center gap-4 text-muted-foreground hover:text-indigo-500 transition-colors group">
+                        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="font-jetbrains-mono text-[11px] uppercase tracking-[6px]">Return_to_Comm_Link</span>
                     </Link>
                 </div>
 
@@ -200,20 +192,17 @@ export default function CreateProfilePage() {
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                 >
-                    {/* Background Glow */}
-                    <div className="absolute -inset-4 bg-gradient-to-r from-[#D9FF00]/5 via-transparent to-[#D9FF00]/5 rounded-[60px] blur-3xl opacity-50 pointer-events-none"></div>
-                    
-                    <div className="relative bg-[#0F0F0F]/80 border border-white/5 rounded-[40px] backdrop-blur-3xl p-8 md:p-16 lg:p-20 shadow-2xl overflow-hidden min-h-[600px]">
+                    <div className="relative bg-card/20 border border-border rounded-[50px] backdrop-blur-3xl p-10 md:p-20 lg:p-24 shadow-2xl overflow-hidden min-h-[600px]">
                         
-                        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center lg:items-start">
+                        <div className="flex flex-col lg:flex-row gap-20 lg:gap-32 items-center lg:items-start">
                             {/* Profile Sidebar */}
-                            <div className="w-full lg:w-1/3 flex flex-col items-center gap-10">
+                            <div className="w-full lg:w-1/3 flex flex-col items-center gap-12">
                                 <div className="relative group/avatar">
-                                    <div className="absolute -inset-2 bg-[#D9FF00]/20 rounded-full blur-xl opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500"></div>
-                                    <Avatar className="w-48 h-48 border-2 border-white/10 p-2 bg-[#050505] relative z-10">
+                                    <div className="absolute -inset-4 bg-indigo-500/10 rounded-full blur-2xl opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-700"></div>
+                                    <Avatar className="w-56 h-56 border border-border p-2 bg-muted/10 relative z-10 transition-all duration-500 group-hover:scale-105">
                                         {uploading ? (
-                                            <div className="flex h-full w-full items-center justify-center bg-black/20 rounded-full">
-                                                <Loader2 className="w-10 h-10 text-[#D9FF00] animate-spin" />
+                                            <div className="flex h-full w-full items-center justify-center bg-muted/20 rounded-full">
+                                                <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
                                             </div>
                                         ) : (
                                             <div className="relative w-full h-full rounded-full overflow-hidden">
@@ -227,98 +216,98 @@ export default function CreateProfilePage() {
                                             </div>
                                         )}
                                     </Avatar>
-                                    <Label htmlFor="avatar-upload" className="absolute bottom-4 right-4 w-12 h-12 bg-[#D9FF00] rounded-full flex items-center justify-center cursor-pointer hover:scale-110 active:scale-95 transition-all shadow-xl shadow-[#D9FF00]/20 z-20 border-4 border-[#050505]">
-                                        <UploadCloud size={20} className="text-black" />
+                                    <Label htmlFor="avatar-upload" className="absolute bottom-6 right-6 w-14 h-14 bg-indigo-500 text-black rounded-2xl flex items-center justify-center cursor-pointer hover:scale-110 active:scale-95 transition-all shadow-xl shadow-indigo-500/20 z-20 border-4 border-background">
+                                        <UploadCloud size={24} />
                                         <input id="avatar-upload" type="file" className="hidden" onChange={handleImageUpload} accept="image/*" />
                                     </Label>
                                 </div>
 
-                                <div className="text-center space-y-3">
-                                    <h2 className="font-bebas text-4xl tracking-widest text-[#D9FF00] uppercase italic">
+                                <div className="text-center space-y-4">
+                                    <h2 className="font-bebas text-5xl tracking-widest text-foreground uppercase italic truncate max-w-xs">
                                         {(formData.name || "UNIDENTIFIED")}_{(formData.lastName || "NODE")}
                                     </h2>
-                                    <p className="font-jetbrains-mono text-[9px] text-white/20 tracking-[6px] uppercase italic">
+                                    <p className="font-jetbrains-mono text-[10px] text-muted-foreground/40 tracking-[8px] uppercase italic">
                                         {formData.email}
                                     </p>
                                 </div>
 
-                                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border/40 to-transparent"></div>
 
-                                <div className="flex gap-6 opacity-30">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#D9FF00] animate-pulse"></div>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#D9FF00] animate-pulse [animation-delay:0.2s]"></div>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#D9FF00] animate-pulse [animation-delay:0.4s]"></div>
+                                <div className="flex gap-8 opacity-20">
+                                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
+                                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse [animation-delay:0.2s]"></div>
+                                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse [animation-delay:0.4s]"></div>
                                 </div>
                             </div>
 
                             {/* Form Section */}
-                            <div className="flex-1 w-full space-y-12">
-                                <div className="space-y-2">
-                                    <h1 className="font-bebas text-5xl md:text-6xl tracking-tighter text-white uppercase italic">Profile_Synthesis</h1>
-                                    <p className="font-jetbrains-mono text-[10px] text-white/30 uppercase tracking-[3px]">Update your metadata for global community uplinks.</p>
+                            <div className="flex-1 w-full space-y-16 text-left">
+                                <div className="space-y-4">
+                                    <h1 className="font-bebas text-6xl md:text-7xl tracking-tighter text-foreground uppercase italic leading-none">Profile_Synthesis</h1>
+                                    <p className="font-jetbrains-mono text-[11px] text-muted-foreground uppercase tracking-[5px]">Update metadata for neural community uplinks.</p>
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="space-y-10">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left">
-                                        <div className="space-y-3">
-                                            <Label className="font-jetbrains-mono text-[9px] text-white/40 uppercase tracking-[2px] ml-1">Node_First_Name</Label>
+                                <form onSubmit={handleSubmit} className="space-y-12">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                        <div className="space-y-4">
+                                            <Label className="font-jetbrains-mono text-[10px] text-muted-foreground uppercase tracking-[3px] ml-1">Node_First_Name</Label>
                                             <Input
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                                className="h-14 bg-[#050505] border-white/10 rounded-2xl px-6 focus:border-[#D9FF00] focus:ring-1 focus:ring-[#D9FF00]/10 font-jetbrains-mono text-sm transition-all"
+                                                className="h-16 bg-muted/5 border-border rounded-3xl px-8 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 font-jetbrains-mono text-sm transition-all"
                                                 placeholder="ALEX"
                                             />
                                         </div>
-                                        <div className="space-y-3">
-                                            <Label className="font-jetbrains-mono text-[9px] text-white/40 uppercase tracking-[2px] ml-1">Node_Last_Name</Label>
+                                        <div className="space-y-4">
+                                            <Label className="font-jetbrains-mono text-[10px] text-muted-foreground uppercase tracking-[3px] ml-1">Node_Last_Name</Label>
                                             <Input
                                                 value={formData.lastName}
                                                 onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                                                className="h-14 bg-[#050505] border-white/10 rounded-2xl px-6 focus:border-[#D9FF00] focus:ring-1 focus:ring-[#D9FF00]/10 font-jetbrains-mono text-sm transition-all"
+                                                className="h-16 bg-muted/5 border-border rounded-3xl px-8 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 font-jetbrains-mono text-sm transition-all"
                                                 placeholder="PARKER"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left">
-                                        <div className="space-y-3">
-                                            <Label className="font-jetbrains-mono text-[9px] text-white/40 uppercase tracking-[2px] ml-1">Communication_Signal</Label>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                        <div className="space-y-4">
+                                            <Label className="font-jetbrains-mono text-[10px] text-muted-foreground uppercase tracking-[3px] ml-1">Communication_Signal</Label>
                                             <Input
                                                 type="tel"
                                                 value={formData.phoneNumber}
                                                 onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
-                                                className="h-14 bg-[#050505] border-white/10 rounded-2xl px-6 focus:border-[#D9FF00] focus:ring-1 focus:ring-[#D9FF00]/10 font-jetbrains-mono text-sm transition-all"
+                                                className="h-16 bg-muted/5 border-border rounded-3xl px-8 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 font-jetbrains-mono text-sm transition-all"
                                                 placeholder="+880..."
                                             />
                                         </div>
-                                        <div className="space-y-3">
-                                            <Label className="font-jetbrains-mono text-[9px] text-white/40 uppercase tracking-[2px] ml-1">Grid_Location</Label>
+                                        <div className="space-y-4">
+                                            <Label className="font-jetbrains-mono text-[10px] text-muted-foreground uppercase tracking-[3px] ml-1">Grid_Location</Label>
                                             <Input
                                                 value={formData.address}
                                                 onChange={(e) => setFormData({...formData, address: e.target.value})}
-                                                className="h-14 bg-[#050505] border-white/10 rounded-2xl px-6 focus:border-[#D9FF00] focus:ring-1 focus:ring-[#D9FF00]/10 font-jetbrains-mono text-sm transition-all"
+                                                className="h-16 bg-muted/5 border-border rounded-3xl px-8 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 font-jetbrains-mono text-sm transition-all"
                                                 placeholder="COORDINATES..."
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="space-y-3 text-left">
-                                        <Label className="font-jetbrains-mono text-[9px] text-white/40 uppercase tracking-[2px] ml-1">Bio_Log</Label>
+                                    <div className="space-y-4">
+                                        <Label className="font-jetbrains-mono text-[10px] text-muted-foreground uppercase tracking-[3px] ml-1">Bio_Log</Label>
                                         <Textarea
                                             value={formData.Bio}
                                             onChange={(e) => setFormData({...formData, Bio: e.target.value})}
-                                            className="min-h-[140px] bg-[#050505] border-white/10 rounded-3xl px-6 py-5 focus:border-[#D9FF00] focus:ring-1 focus:ring-[#D9FF00]/10 font-jetbrains-mono text-sm transition-all resize-none"
+                                            className="min-h-[160px] bg-muted/5 border-border rounded-[32px] px-8 py-6 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 font-jetbrains-mono text-sm transition-all resize-none"
                                             placeholder="DESCRIBE_YOUR_INTERFACE..."
                                         />
                                     </div>
 
-                                    <div className="pt-8">
+                                    <div className="pt-10">
                                         <Button
                                             type="submit"
                                             disabled={loading || uploading}
-                                            className="w-full h-16 bg-[#D9FF00] text-black font-bebas text-2xl tracking-[0.3em] rounded-3xl hover:scale-[1.01] active:scale-[0.98] transition-all shadow-2xl shadow-[#D9FF00]/20 flex items-center justify-center gap-4 disabled:opacity-50"
+                                            className="w-full h-20 bg-foreground text-background font-bebas text-3xl tracking-[0.4em] rounded-[30px] hover:opacity-90 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-5 disabled:opacity-50"
                                         >
-                                            {loading ? <Loader2 className="animate-spin w-6 h-6" /> : "Initiate_Synthesis"}
+                                            {loading ? <Loader2 className="animate-spin w-8 h-8" /> : "Initiate_Synthesis"}
                                         </Button>
                                     </div>
                                 </form>

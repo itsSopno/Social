@@ -21,7 +21,7 @@ export default function CommunityLayout({
   const [isMobileLayout, setIsMobileLayout] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobileLayout(window.innerWidth < 1024); // Threshold for mobile/tablet behavior
+    const handleResize = () => setIsMobileLayout(window.innerWidth < 1024);
     handleResize();
     window.addEventListener('resize', handleResize);
     
@@ -47,7 +47,7 @@ export default function CommunityLayout({
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden font-sans flex flex-col items-center">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden font-sans flex flex-col items-center transition-colors duration-300">
       
       {/* --- 1. TOP: FLOATING NAVBAR --- */}
       <Navbari />
@@ -69,15 +69,15 @@ export default function CommunityLayout({
           </motion.div>
 
           {/* RIGHT SIDE: Activity Panel & Messaging */}
-          <aside className={`${showMobileChat ? "block" : "hidden"} xl:block xl:col-span-4 space-y-6 w-full pt-20 md:pt-0`}>
+          <aside className={`${showMobileChat ? "block" : "hidden"} xl:block xl:col-span-4 space-y-8 w-full pt-10 xl:pt-0`}>
             
             {/* Mobile Header for Chat Sidebar */}
             {showMobileChat && (
-              <div className="flex items-center justify-between mb-6 xl:hidden">
-                <h4 className="font-bebas text-2xl tracking-widest text-indigo-500">COMM_TERMINAL</h4>
+              <div className="flex items-center justify-between mb-8 xl:hidden">
+                <h4 className="font-bebas text-3xl tracking-widest text-indigo-500 italic uppercase">COMM_TERMINAL</h4>
                 <button 
                   onClick={() => setShowMobileChat(false)}
-                  className="px-4 py-2 bg-white/5 rounded-xl text-[10px] font-jetbrains-mono uppercase"
+                  className="px-6 py-3 bg-muted/10 border border-border/40 rounded-2xl text-[10px] font-jetbrains-mono uppercase tracking-widest"
                 >
                   Close_Term
                 </button>
@@ -86,12 +86,12 @@ export default function CommunityLayout({
             
             {/* System Status Tracker */}
             <MagneticCard delay={0.4}>
-              <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-3xl backdrop-blur-xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-500" />
+              <div className="bg-card/20 border border-border/40 p-8 rounded-[40px] backdrop-blur-3xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-500" />
                 
-                <div className="flex items-center gap-3 mb-6">
-                  <Activity className="text-indigo-500" size={18} />
-                  <h4 className="font-bebas tracking-[2px] text-white/50 text-sm uppercase">Active_Nodes</h4>
+                <div className="flex items-center gap-4 mb-8">
+                  <Activity className="text-indigo-500" size={20} />
+                  <h4 className="font-bebas tracking-[3px] text-foreground/50 text-sm uppercase italic">Active_Nodes</h4>
                 </div>
                 
                 <div className="space-y-4">
@@ -99,33 +99,35 @@ export default function CommunityLayout({
                     <motion.div 
                       key={i} 
                       whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/[0.05] transition-all cursor-crosshair"
+                      className="flex items-center justify-between p-4 rounded-3xl hover:bg-muted/10 border border-transparent hover:border-border/40 transition-all cursor-crosshair"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-2 h-2 rounded-sm ${i === 1 ? 'bg-indigo-500 animate-pulse shadow-[0_0_8px_rgba(217,255,0,0.6)]' : 'bg-white/20'}`} />
-                        <span className="text-[11px] font-jetbrains-mono text-white/70 uppercase">Uplink_Relay_0{i}</span>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-2.5 h-2.5 rounded-sm ${i === 1 ? 'bg-indigo-500 animate-pulse shadow-[0_0_10px_rgba(99,102,241,0.6)]' : 'bg-muted-foreground/20'}`} />
+                        <span className="text-[11px] font-jetbrains-mono text-foreground/70 uppercase tracking-widest font-bold">Uplink_Relay_0{i}</span>
                       </div>
-                      <span className="text-[10px] font-jetbrains-mono text-indigo-500/60">{100 - i * 5}ms</span>
+                      <span className="text-[10px] font-jetbrains-mono text-indigo-500/60 font-bold">{100 - i * 5}ms</span>
                     </motion.div>
                   ))}
                 </div>
               </div>
             </MagneticCard>
 
-            {/* Time / System Status (Moved from old Header) */}
+            {/* Time / System Status */}
             <MagneticCard delay={0.5}>
-              <div className="bg-white/[0.02] border border-white/[0.05] p-6 rounded-3xl backdrop-blur-xl flex flex-col items-center justify-center text-center">
-                 <span className="text-[9px] font-jetbrains-mono text-white/30 tracking-[4px] uppercase">
-                  Telemetry_Log
+              <div className="bg-card/20 border border-border/40 p-8 rounded-[40px] backdrop-blur-3xl flex flex-col items-center justify-center text-center">
+                 <span className="text-[9px] font-jetbrains-mono text-foreground/40 tracking-[6px] uppercase italic leading-none">
+                  Telemetry_Sync_Active
                 </span>
-                <span className="font-bebas text-2xl text-indigo-500 tracking-[4px] mt-1">
+                <span className="font-bebas text-3xl text-indigo-500 tracking-[5px] mt-2 italic">
                   {currentTime}
                 </span>
               </div>
             </MagneticCard>
 
             {/* Direct Messaging / Recent Chats */}
-            <ChatSidebar onSelectChat={(id: string) => setActiveChat(id)} />
+            <div className="pt-2">
+              <ChatSidebar onSelectChat={(id: string) => setActiveChat(id)} />
+            </div>
           </aside>
         </main>
       </div>
@@ -137,7 +139,7 @@ export default function CommunityLayout({
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            className={`fixed z-[300] shadow-[0_30px_60px_rgba(0,0,0,0.8)] ${isMobileLayout ? "top-[72px] inset-x-0 h-[calc(100dvh-72px)] w-full rounded-none" : "bottom-8 right-8 w-[400px] h-[600px] rounded-[40px]"}`}
+            className={`fixed z-[300] shadow-2xl ${isMobileLayout ? "top-[72px] inset-x-0 h-[calc(100dvh-72px)] w-full rounded-none" : "bottom-10 right-10 w-[420px] h-[650px] rounded-[50px] overflow-hidden border border-border/40 backdrop-blur-3xl"}`}
           >
             <ChatWindow 
               recipientId={activeChat} 

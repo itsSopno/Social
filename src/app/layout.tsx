@@ -8,6 +8,7 @@ import SmoothScroll from "@/components/SmoothScroll/SmoothScroll";
 import LoadingWrapper from "@/components/LoadingWrapper/LoadingWrapper";
 import { ToasterProvider } from "@/components/providers/ToasterProvider";
 import { GlobalProvider } from "@/context/globalContext";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
@@ -30,17 +31,31 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
-      <body className={`${inter.variable} ${bebasNeue.variable} ${playfair.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased bg-[#131313] text-[#c6c6c6]`}>
+      <body className={cn(
+        inter.variable, 
+        bebasNeue.variable, 
+        playfair.variable, 
+        spaceGrotesk.variable, 
+        jetBrainsMono.variable, 
+        "antialiased bg-background text-foreground transition-colors duration-300"
+      )}>
         <SessionProvider>
           <GlobalProvider>
-            <ToasterProvider />
-            <LoadingWrapper>
-              <SmoothScroll>
-                <div className="app-wrapper">
-                  <main className="main-content">{children}</main>
-                </div>
-              </SmoothScroll>
-            </LoadingWrapper>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ToasterProvider />
+              <LoadingWrapper>
+                <SmoothScroll>
+                  <div className="app-wrapper">
+                    <main className="main-content">{children}</main>
+                  </div>
+                </SmoothScroll>
+              </LoadingWrapper>
+            </ThemeProvider>
           </GlobalProvider>
         </SessionProvider>
       </body>
