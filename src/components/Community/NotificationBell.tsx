@@ -75,10 +75,13 @@ export const NotificationBell = () => {
                                             {pendingRequests.map((req, idx) => (
                                                 <div key={idx} className="flex items-center justify-between p-2 bg-white/5 rounded-xl border border-white/10">
                                                     <div className="flex items-center gap-2 overflow-hidden">
-                                                        <div className="p-1.5 bg-white/5 rounded-lg shrink-0">
-                                                            <UserPlus size={14} className="text-[#D9FF00]" />
+                                                        <div className="w-8 h-8 rounded-lg overflow-hidden border border-white/10 bg-white/5 shrink-0">
+                                                            <img src={req.userImage} alt="User" className="w-full h-full object-cover" />
                                                         </div>
-                                                        <span className="text-white text-xs truncate font-jetbrains-mono">{req.from}</span>
+                                                        <div className="flex flex-col overflow-hidden">
+                                                            <span className="text-white text-xs truncate font-bebas tracking-widest">{req.userName}</span>
+                                                            <span className="text-white/30 text-[8px] truncate font-jetbrains-mono">{req.from}</span>
+                                                        </div>
                                                     </div>
                                                     <div className="flex gap-1 ml-2">
                                                         <button 
