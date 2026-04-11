@@ -1,0 +1,186 @@
+@use "theme" as *;
+
+:root {
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
+  --obsidian: #131313;
+  --silver: #c6c6c6;
+  --neon-lime: #c3f400;
+  --neon-lime-alt: #2ae500;
+}
+
+// Reset & Base
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-inter);
+  background-color: var(--obsidian);
+  color: var(--silver);
+  line-height: normal;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+// --- Structural Layout (Fixes Centering) ---
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10; // Lift above hidden fragments
+  pointer-events: auto !important;
+}
+
+// --- Centering Utilities ---
+
+.f-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.g-center {
+  display: grid;
+  place-items: center;
+}
+
+// --- Typography Utilities (Pixel Perfect) ---
+
+.font-bebas {
+  font-family: var(--font-bebas);
+}
+
+.hero-title {
+  font-family: var(--font-bebas);
+  line-height: 0.82; 
+  letter-spacing: -0.02em;
+}
+
+.outline-text {
+  -webkit-text-stroke: 1px #1A1A1A;
+  color: transparent;
+  font-style: italic;
+
+  body.dark & {
+    -webkit-text-stroke: 1px #FDFDFD;
+  }
+}
+
+// --- Layout Components ---
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (min-width: 768px) {
+    padding: 0 60px;
+  }
+}
+
+// Polaroids & Frames
+.img-frame {
+  background: white;
+  padding: 12px;
+  border: 1px solid #EAEAEA;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+@font-face {
+  font-family: 'DirtyLine';
+  src: url('../Font/Dirtyline 36daysoftype 2022.woff') format('woff'),
+    url('../Font/Dirtyline 36daysoftype 2022.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CRENZO';
+  src: url('../Font/CRENZO.ttf') format('truetype'), url('../Font/CRENZO.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MilkyWalky";
+  src: url('../Font/MilkyWalky-Regular.otf') format('opentype'), url('../Font/MilkyWalky-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Creme Espana";
+  src: url('../Font/Creme Espana.woff') format('woff'), url('../Font/Creme Espana.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-creme {
+  font-family: "Creme Espana";
+}
+
+.font-milky {
+  font-family: "MilkyWalky";
+}
+
+.font-line {
+  font-family: 'DirtyLine';
+}
+
+.font-crenzo {
+  font-family: 'CRENZO';
+}
+
+// Mobile Responsive Fix
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 50px !important; // Adjusted for better mobile fit
+  }
+}
+
+// --- Custom Scrollbar ---
+.custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(217, 255, 0, 0.2);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: rgba(217, 255, 0, 0.5);
+  }
+
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 255, 0, 0.2) transparent;
+}

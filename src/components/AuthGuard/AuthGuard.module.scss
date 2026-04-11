@@ -1,0 +1,14 @@
+@use "../../styles/theme" as *;
+
+.loaderContainer {
+  @include flex-center;
+  height: 60vh;
+  flex-direction: column;
+  gap: $space-md;
+
+  p {
+    font-size: 1.25rem;
+    color: $text-muted;
+    font-weight: 500;
+  }
+}

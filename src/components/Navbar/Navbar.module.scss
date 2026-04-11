@@ -1,0 +1,137 @@
+@use "../../styles/theme" as *;
+
+.navbar {
+  @include glass;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: $space-sm 0;
+  box-shadow: $shadow-sm;
+  transition: $transition-normal;
+
+  :global(.container) {
+    @include container;
+    @include flex-between;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    @include gradient-text;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+  }
+
+  .navLinks {
+    display: flex;
+    gap: $space-lg;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  .link {
+    color: $text-muted;
+    font-weight: 500;
+    text-decoration: none;
+    transition: $transition-fast;
+    position: relative;
+    font-size: 0.95rem;
+
+    &:hover {
+      color: $text;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $primary;
+      transition: $transition-normal;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+
+  .activeLink {
+    color: $primary !important;
+    font-weight: 700;
+
+    &::after {
+      width: 100%;
+    }
+  }
+
+  .actions {
+    @include flex-center;
+    gap: $space-md;
+  }
+
+  .userEmail {
+    font-size: 0.875rem;
+    color: $text-muted;
+    @include tablet {
+      display: none;
+    }
+  }
+
+  .loginBtn {
+    @include btn-primary;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .logoutBtn {
+    padding: 0.5rem 1rem;
+    border-radius: $radius-md;
+    border: 1px solid $border;
+    background: transparent;
+    color: $text;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      background: $background;
+      border-color: $text;
+    }
+  }
+
+  .mobileMenu {
+    display: none;
+    font-size: 1.5rem;
+    color: $text;
+    cursor: pointer;
+
+    @include tablet {
+      display: block;
+    }
+  }
+}
+
+.mobileDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: $surface;
+  padding: $space-md;
+  border-bottom: 1px solid $border;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  box-shadow: $shadow-lg;
+
+  a {
+    color: $text;
+    font-weight: 600;
+    text-decoration: none;
+    padding: $space-xs 0;
+  }
+}

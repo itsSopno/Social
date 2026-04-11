@@ -1,0 +1,5 @@
+src/app/Profile/page.tsx(38,16): error TS2345: Argument of type 'number | ""' is not assignable to parameter of type 'SetStateAction<string>'.
+  Type 'number' is not assignable to type 'SetStateAction<string>'.
+src/app/Profile/page.tsx(103,37): error TS2339: Property 'role' does not exist on type 'IUserData'.
+src/components/Community/Navbari.tsx(68,43): error TS2339: Property 'badge' does not exist on type '{ name: string; href: string; icon: Element; id: string; }'.
+src/components/Community/Navbari.tsx(70,51): error TS2339: Property 'badge' does not exist on type '{ name: string; href: string; icon: Element; id: string; }'.

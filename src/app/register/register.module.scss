@@ -1,0 +1,237 @@
+@use "../../styles/theme" as *;
+
+.authWrapper {
+    min-height: 100vh;
+    // background-color: #131410;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    color: black;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 40px;
+    gap: 80px;
+    z-index: 10;
+
+    @media (max-width: 968px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+.infoSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+
+        .dot {
+            color: rgba(106, 61, 202, 0.3);
+        }
+    }
+
+    .heroText {
+        margin-top: 60px;
+        color: black;
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            font-weight: 900;
+
+            span {
+                color: rgba(106, 61, 202, 0.3);
+            }
+
+            .italic {
+                font-family: serif;
+                font-style: italic;
+                font-weight: 300;
+            }
+        }
+
+        p {
+            margin-top: 20px;
+            color: black;
+            max-width: 350px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    }
+}
+
+.demoBox {
+    margin-top: 60px;
+    padding: 20px;
+    border: 1px dashed rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.02);
+    width: fit-content;
+
+    .demoLabel {
+        display: block;
+        font-size: 0.6rem;
+        color: #d9ff00;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .demoItem {
+        font-size: 0.8rem;
+        color: white;
+
+        span {
+            color: white;
+            margin-right: 5px;
+        }
+    }
+}
+
+.formSide {
+    display: flex;
+    justify-content: center;
+}
+
+.formCard {
+    width: 100%;
+    max-width: 450px;
+    background: indigo;
+    padding: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    .header {
+        margin-bottom: 30px;
+
+        h2 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+    }
+}
+
+.inputGroup {
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 0;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: #d9ff00;
+        }
+    }
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 15px;
+    background: #d9ff00;
+    color: black;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.googleBtn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+
+    span {
+        background: #1a1d13;
+        padding: 0 15px;
+        font-size: 0.6rem;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 2px;
+    }
+}
+
+.footerLink {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+
+    a {
+        color: #d9ff00;
+        text-decoration: none;
+        font-weight: 700;
+    }
+}
+
+.errorBanner {
+    background: rgba(234, 67, 53, 0.1);
+    color: #ea4335;
+    padding: 10px;
+    font-size: 0.8rem;
+    border-left: 3px solid #ea4335;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "name": "N.E.R.V. Evangelion Unit-01 Mechanical Keyboard",
+    "image": "https://i.postimg.cc/X7jbyMHd/637e1f879925c6873acedbdc8e51a366.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Custom mechanical keyboard featuring a matte gray frame and a white keycap set with unique 'NO REDRAW' lime-green escape key, N.E.R.V. logo key, and small integrated screen. Part of a limited production run.",
+    "price": 350.0
+  },
+  {
+    "name": "Artisan Keycaps Treasures - Retro Gaming Layout",
+    "image": "https://i.postimg.cc/3N9zZRSB/a1d5174dbf5fc7e45c1be3fd4e5f2eef.jpg",
+    "category": "Keycaps",
+    "quantity": 1,
+    "description": "Unique mechanical keyboard setup showcasing individual custom artisan keycaps and standard keycaps with varied iconography including retro camera, power, and media controls. Comes with additional keys in a tray.",
+    "price": 450.0
+  },
+  {
+    "name": "Evangelion Unit-01 Custom Mechanical Keyboard with Coiled Cable",
+    "image": "https://i.postimg.cc/pXXwLfrs/7ff9e9f88e92834533cd456a7f09cf4b.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Custom mechanical keyboard with a split purple and green color scheme, detailed with stylized Japanese text and iconography. Features purple key backlighting and a purple coiled cable on a topo map pattern desk mat.",
+    "price": 400.0
+  },
+  {
+    "name": "Custom Samurai Warrior Themed Keyboard",
+    "image": "https://i.postimg.cc/Gm6VK6QJ/6556547574143be7b3abf24f6c5be26f.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Custom mechanical keyboard featuring dark wood frame and unique burgundy/gold keycaps with white legends and integrated golden cloud patterns. Features unique stylized samurai/onibi artisan keycaps in top left and a black coiled cable.",
+    "price": 500.0
+  },
+  {
+    "name": "Starfield Limited Edition Xbox Controller",
+    "image": "https://i.postimg.cc/B6BzqbGm/ef8c95ea081edbabdd647ea709c40d2d.jpg",
+    "category": "Game Controllers",
+    "quantity": 1,
+    "description": "Starfield-themed custom Xbox wireless controller featuring a retro-futuristic aesthetic with blue and orange accents, stylized control panel text, and a golden faceted D-pad. Comes with themed packaging.",
+    "price": 100.0
+  },
+  {
+    "name": "Xbox Series S Console - Flame Hand-Painted Edition",
+    "image": "https://i.postimg.cc/J0TdkF0F/a01a8fe9d22dfd54a35684ec4113b91e.jpg",
+    "category": "Game Consoles",
+    "quantity": 1,
+    "description": "Hand-painted Xbox Series S console and controller set featuring a dynamic black and yellow flame pattern against a white background. Hand-painted details make each set unique.",
+    "price": 380.0
+  },
+  {
+    "name": "Mr Bushido Series X Console - Limited Run",
+    "image": "https://i.postimg.cc/LsdQLL90/07e4866d6e0889e3cee7a4d569fb8663.jpg",
+    "category": "Game Consoles",
+    "quantity": 1,
+    "description": "Mr Bushido-themed Xbox Series X console and controller featuring a detailed samurai silhouette against a crimson sun and ancient architectural patterns. Exclusive collector's edition with special Mr Bushido branding.",
+    "price": 600.0
+  },
+  {
+    "name": "Ragnarok Wolf & Bear DualSense Controllers (Set of 2)",
+    "image": "https://i.postimg.cc/9MbL6kdH/400ffc8fdcd20c94f9a31a2ff6efc1fc.jpg",
+    "category": "Game Controllers",
+    "quantity": 1,
+    "description": "A pair of custom DualSense controllers featuring stylized designs: one in blue with a double wolf sigil, the other in white/red with a bear sigil. Inspired by Ragnarok mythology and characters.",
+    "price": 180.0
+  },
+  {
+    "name": "GTA VI Vice City Neon PS5 DualSense Controller with Standard Packaging",
+    "image": "https://i.postimg.cc/66HHzD62/2446e55db13ebd9f3c3fbb50879766c8.jpg",
+    "category": "Game Controllers",
+    "quantity": 1,
+    "description": "Custom PS5 DualSense controller featuring vibrant neon pink, orange, and blue retro wave graphics, including palm trees and 'VI' logo, inspired by Vice City. Includes a custom PS5 display stand.",
+    "price": 130.0
+  },
+  {
+    "name": "Ghost of Yōtei Collectors DualSense Controller",
+    "image": "https://i.postimg.cc/c4rFzXrN/02c64d7cb651fbbeaee7ab386486f3a2.jpg",
+    "category": "Game Controllers",
+    "quantity": 1,
+    "description": "Ghost of Yōtei-themed DualSense controller with a subtle cream frame and striking gold leaf brushstroke patterns. Features golden Japanese character iconography and unique themed packaging.",
+    "price": 150.0
+  },
+  {
+    "name": "Cuphead Xbox One Console and Controller Bundle",
+    "image": "https://i.postimg.cc/3RhKSkBz/069f3a890cca13b88fdf9c6f0b50cafd.jpg",
+    "category": "Gaming Console",
+    "quantity": 1,
+    "description": "Special edition Xbox One S bundle featuring a 'Cuphead' themed console and wireless controller. The console and controller are bright yellow with hand-drawn Cuphead and Mugman graphics. The controller has red D-pad and triggers, blue face buttons and analog sticks, and includes 'DON'T DEAL WITH THE DEVIL' text.",
+    "price": 349.99
+  },
+  {
+    "name": "Custom Naruto Akatsuki PS4 Controller",
+    "image": "https://i.postimg.cc/x8T9QBBs/ac1b01609873b05817449f038922431f.jpg",
+    "category": "Gaming Controller",
+    "quantity": 1,
+    "description": "Custom DualShock 4 controller for PlayStation 4, featuring a striking black and red design inspired by the Akatsuki organization from the 'Naruto' anime series. The controller has a matte black shell adorned with the iconic red Akatsuki clouds. The central touchpad is finished in silver and engraved with the hidden leaf village symbol crossed out.",
+    "price": 89.99
+  },
+  {
+    "name": "Panic Playdate Handheld Console",
+    "image": "https://i.postimg.cc/X7qnzSwH/684b21f0877157466183f6d00b5a7e69.jpg",
+    "category": "Handheld Console",
+    "quantity": 1,
+    "description": "A unique, bright yellow handheld gaming system developed by Panic. It features a black-and-white high-contrast screen, a control pad, 'A' and 'B' buttons, and a mechanical crank on the side for unique game input. Shown running the game 'Lost Your Marbles'.",
+    "price": 199.00
+  },
+  {
+    "name": "MelGeek Pixel Mechanical Keyboard",
+    "image": "https://i.postimg.cc/fR0DMcq6/5d8b37f86856d5ea2596939f10aa3458.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Custom mechanical keyboard in a white frame with white, black, and grey keycaps, on a technical grid desk mat. It features a red segment display near the spacebar with '9-0'CLOCK' text and orange-stem switches on the side.",
+    "price": 269.00
+  },
+  {
+    "name": "GravaStar Mercury K1 Pro Mechanical Keyboard",
+    "image": "https://i.postimg.cc/26Tf023n/7bf1d7d67c5a3b7ec925c3f76c0f269f.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Mechanical gaming keyboard with a futuristic, sci-fi inspired design. It has an angular, metallic-looking frame with visible wires and mechanical details, supported by tripod legs. Features dynamic RGB backlighting with blue, purple, and pink LEDs and transparent keycaps on the right side.",
+    "price": 149.95
+  },
+  {
+    "name": "DURGOD K84 9-O'CLOCK Mechanical Keyboard (Close-up)",
+    "image": "https://i.postimg.cc/Qt82K1mY/6b1d7c691358dfe5a0807bc60f0ed2cf.jpg",
+    "category": "Mechanical Keyboards",
+    "quantity": 1,
+    "description": "Detailed close-up view of a mechanical keyboard on a technical blueprint mat. Focus is on the bottom edge featuring a bright red illuminated digital display showing 'K:84 DURGOD 9-O'CLOCK' and a silver volume wheel in a protective black cage.",
+    "price": 179.99
+  },
+  {
+    "name": "GameBoy Phone Case Controller",
+    "image": "https://i.postimg.cc/1X4bJSLB/94fea0c94756771807c6d3a22d6c5d83.jpg",
+    "category": "Phone Accessory",
+    "quantity": 1,
+    "description": "Protective case for a smartphone with an integrated, functional GameBoy-style controller on the back. Made of clear plastic, it has a separate small monochrome screen, a d-pad, and buttons, allowing the user to play retro games.",
+    "price": 34.99
+  },
+  {
+    "name": "Anbernic RG35XX Retro Handheld Game Console",
+    "image": "https://i.postimg.cc/fyFpPFsZ/b5b9ffdbe40a52c0e7990d97b5d2bebe.jpg",
+    "category": "Handheld Console",
+    "quantity": 2,
+    "description": "A horizontal retro gaming handheld shown in two versions: solid orange and transparent black. It has a vertical form factor with a 3.5-inch screen and standard retro gamepad buttons (d-pad, A/B/X/Y, start/select). It is designed to emulate classic game consoles.",
+    "price": 55.99
+  },
+  {
+    "name": "Miyoo Mini+ (Plus) Retro Handheld Console",
+    "image": "https://i.postimg.cc/HscfMp0p/2c692059162f090d9eb42a7b06dd0039.jpg",
+    "category": "Handheld Console",
+    "quantity": 1,
+    "description": "A compact retro gaming handheld with a transparent purple shell. It has a high-resolution 3.5-inch screen and is shown resting on a dark, patterned desk mat next to a white wireless mouse and keyboard.",
+    "price": 69.99
+  },
+  {
+    "name": "Handheld Console with Screen Overlay",
+    "image": "https://i.postimg.cc/LsR7GLc4/284cc7331e99a3c6b3549616184d5a1e.jpg",
+    "category": "Handheld Console",
+    "quantity": 1,
+    "description": "A metallic blue vertical handheld gaming device being held, featuring a large screen and standard retro controls. It has an additional small pixel-art display on top. The main screen shows a scene from the 'Metal Slug' arcade game.",
+    "price": 129.50
+  }
+]
