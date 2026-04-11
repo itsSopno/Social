@@ -11,21 +11,33 @@ import {
     Calendar,
     ArrowLeft,
     Terminal,
-    ShieldCheck
+    ShieldCheck,
+    Search,
+    Trash2,
+    UserMinus
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useGlobalContext, IUserData } from "@/context/globalContext";
+import { useState } from "react";
 import Image from "next/image";
 import MyArchive from "@/components/Community/UserPost/post";
 
 export default function ProfilePage() {
     const { data: session } = useSession();
-    const { allUsers, loading, setActiveChat } = useGlobalContext();
+    const { allUsers, loading, setActiveChat, unfriend } = useGlobalContext();
+    const [searchTerm, setSearchTerm] = useState("");
 
     const currentUserData = allUsers?.find(
         (user: IUserData) => user.email === session?.user?.email
     );
+
+    const filteredFriends = currentUserData?.friends?.filter((email: string) => {
+        const friend = allUsers.find(u => u.email === email);
+        if (!friend) return false;
+        return friend.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+               friend.email.toLowerCase().includes(searchTerm.toLowerCase());
+    }) || [];
 
     if (loading) return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center">
@@ -190,38 +202,70 @@ export default function ProfilePage() {
 
                             {/* Friends List for Personal Profile */}
                             <div className="pt-8 border-t border-white/5">
-                                <h3 className="font-bebas text-2xl text-white tracking-widest uppercase mb-6 flex items-center justify-between">
-                                    Friend List
-                                    <span className="text-[10px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded-md font-jetbrains-mono">
-                                        {currentUserData.friends?.length || 0}
-                                    </span>
-                                </h3>
+                                <div className="flex flex-col gap-6 mb-6">
+                                    <h3 className="font-bebas text-2xl text-white tracking-widest uppercase flex items-center justify-between">
+                                        Friend List
+                                        <span className="text-[10px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded-md font-jetbrains-mono">
+                                            {currentUserData.friends?.length || 0}
+                                        </span>
+                                    </h3>
+
+                                    {/* Search Input */}
+                                    <div className="relative group">
+                                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-white/20 group-focus-within:text-indigo-500 transition-colors">
+                                            <Search size={14} />
+                                        </div>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Search_Connections..."
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-2.5 pl-10 pr-4 font-jetbrains-mono text-[10px] text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.05] transition-all uppercase tracking-widest"
+                                        />
+                                    </div>
+                                </div>
                                 
                                 <div className="grid grid-cols-4 gap-3">
-                                    {currentUserData.friends?.map((friendEmail) => {
+                                    {filteredFriends.map((friendEmail: string) => {
                                         const friendObj = allUsers.find(u => u.email === friendEmail);
                                         if (!friendObj) return null;
                                         return (
-                                            <Link 
-                                                key={friendEmail} 
-                                                href={`/Community/Profile/${encodeURIComponent(friendEmail)}`}
-                                                className="group/friend relative"
-                                                title={friendObj.name}
-                                            >
-                                                <div className="aspect-square rounded-xl overflow-hidden border border-white/10 group-hover/friend:border-indigo-500/50 transition-all">
-                                                    <img 
-                                                        src={friendObj.image || `https://ui-avatars.com/api/?name=${friendObj.name}&background=6366f1&color=050505`} 
-                                                        alt={friendObj.name}
-                                                        className="w-full h-full object-cover grayscale group-hover/friend:grayscale-0 transition-all"
-                                                    />
-                                                </div>
+                                            <div key={friendEmail} className="group/friend relative">
+                                                <Link 
+                                                    href={`/Community/Profile/${encodeURIComponent(friendEmail)}`}
+                                                    title={friendObj.name}
+                                                    className="block"
+                                                >
+                                                    <div className="aspect-square rounded-xl overflow-hidden border border-white/10 group-hover/friend:border-indigo-500/50 transition-all">
+                                                        <img 
+                                                            src={friendObj.image || `https://ui-avatars.com/api/?name=${friendObj.name}&background=6366f1&color=050505`} 
+                                                            alt={friendObj.name}
+                                                            className="w-full h-full object-cover grayscale group-hover/friend:grayscale-0 transition-all scale-100 group-hover/friend:scale-110"
+                                                        />
+                                                    </div>
+                                                </Link>
+                                                
+                                                {/* Unfriend Button */}
+                                                <button 
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if(confirm(`Terminate uplink with ${friendObj.name}?`)) {
+                                                            unfriend(friendEmail);
+                                                        }
+                                                    }}
+                                                    className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover/friend:opacity-100 transition-all hover:scale-110 shadow-lg shadow-red-500/20 z-20"
+                                                    title="Terminate Uplink"
+                                                >
+                                                    <UserMinus size={12} />
+                                                </button>
+
                                                 <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-indigo-500 rounded-full border-2 border-[#050505] opacity-0 group-hover/friend:opacity-100 transition-opacity" />
-                                            </Link>
+                                            </div>
                                         );
                                     })}
-                                    {(!currentUserData.friends || currentUserData.friends.length === 0) && (
-                                        <p className="col-span-full font-jetbrains-mono text-[8px] text-white/20 uppercase tracking-[2px] text-center py-4 border border-dashed border-white/5 rounded-2xl">
-                                            No active uplinks yet.
+                                    {filteredFriends.length === 0 && (
+                                        <p className="col-span-full font-jetbrains-mono text-[8px] text-white/20 uppercase tracking-[2px] text-center py-6 border border-dashed border-white/5 rounded-2xl">
+                                            {searchTerm ? "No matching uplink found." : "No active uplinks yet."}
                                         </p>
                                     )}
                                 </div>

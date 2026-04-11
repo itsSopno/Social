@@ -48,6 +48,7 @@ interface GlobalContextType {
     sendFriendRequest: (receiverEmail: string) => Promise<void>;
     acceptFriendRequest: (senderEmail: string) => Promise<void>;
     rejectFriendRequest: (senderEmail: string) => Promise<void>;
+    unfriend: (friendEmail: string) => Promise<void>;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -242,6 +243,29 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const unfriend = async (friendEmail: string) => {
+        if (!session?.user?.email) return;
+        try {
+            const res = await axios.delete(`${BACKEND_URL}/api/friend/unfriend`, {
+                data: {
+                    userEmail: session.user.email,
+                    friendEmail
+                }
+            });
+            if (res.data.success) {
+                // Update local state immediately
+                setUserData(prev => prev ? {
+                    ...prev,
+                    friends: prev.friends.filter(email => email !== friendEmail)
+                } : null);
+                
+                toast.success("Connection Terminated", { description: "User removed from your uplink network." });
+            }
+        } catch (err: any) {
+            toast.error("Operation Failed", { description: "Signal lost during termination." });
+        }
+    };
+
     return (
         <GlobalContext.Provider
             value={{
@@ -260,7 +284,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 socket,
                 sendFriendRequest,
                 acceptFriendRequest,
-                rejectFriendRequest
+                rejectFriendRequest,
+                unfriend
             }}
         >
             {children}
