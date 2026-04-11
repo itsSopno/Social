@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { motion, useReducedMotion } from "framer-motion";
 import { UploadCloud, Loader2, ArrowLeft, ShieldCheck } from "lucide-react";
 import { FormEvent, useState, ChangeEvent, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
@@ -130,19 +130,56 @@ export default function CreateProfilePage() {
 
     if (status === "unauthenticated") {
         return (
-            <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-6 text-center">
-                <div className="max-w-md space-y-8 p-12 rounded-[40px] border border-white/5 bg-white/[0.02] backdrop-blur-3xl">
-                    <div className="w-20 h-20 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <ShieldCheck className="w-10 h-10 text-red-500" />
-                    </div>
-                    <h2 className="font-bebas text-4xl text-white tracking-widest uppercase italic">Access_Denied</h2>
-                    <p className="font-jetbrains-mono text-xs text-white/40 uppercase tracking-[2px] leading-relaxed">
-                        Secure uplink required. Please authenticate via Google to establish a community connection.
-                    </p>
-                    <button onClick={() => signIn("google", { callbackUrl: "/" })} className="w-full py-4 bg-[#D9FF00] text-black font-bebas text-xl tracking-[0.1em] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#D9FF00]/10 mt-6">
-                        Establish Connection (Google)
-                    </button>
+            <div className="min-h-screen bg-[#050505] flex items-center justify-center px-6 relative overflow-hidden">
+                {/* Atmospheric Background */}
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" />
+                    <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#D9FF00]/5 rounded-full blur-[120px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] [mask-image:linear-gradient(to_bottom,white,transparent)] pointer-events-none" />
                 </div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="max-w-lg w-full relative z-10"
+                >
+                    <div className="p-10 md:p-14 rounded-[30px] border border-white/5 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative overflow-hidden group">
+                        {/* Shimmer Effect */}
+                        <div className="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />
+                        
+                        <div className="text-center space-y-6">
+                            {/* Logo Representation */}
+                            <div className="w-16 h-16 mx-auto mb-8 relative">
+                                <div className="absolute inset-0 bg-[#D9FF00]/20 blur-xl rounded-full" />
+                                <div className="relative w-full h-full border border-white/10 rounded-2xl bg-[#0A0A0A] flex items-center justify-center transform rotate-3">
+                                    <h2 className="font-bebas text-3xl text-white tracking-widest italic -rotate-3">S<span className="text-[#D9FF00]">.</span></h2>
+                                </div>
+                            </div>
+
+                            <h1 className="font-bebas text-4xl md:text-5xl text-white tracking-[0.15em] uppercase">
+                                Global <span className="text-[#D9FF00] italic">Community</span>
+                            </h1>
+                            
+                            <p className="font-jetbrains-mono text-xs text-white/40 uppercase tracking-[2px] leading-relaxed max-w-sm mx-auto">
+                                Synchronize your digital identity to access the high-performance circle.
+                            </p>
+
+                            <div className="pt-8">
+                                <Link 
+                                    href="/register"
+                                    className="relative w-full flex items-center justify-center gap-4 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-jetbrains-mono text-xs uppercase tracking-[0.2em] rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(217,255,0,0.1)] hover:border-[#D9FF00]/30 overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-[#D9FF00]/0 via-[#D9FF00]/10 to-[#D9FF00]/0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                    <svg viewBox="0 0 24 24" width="18" height="18" className="z-10">
+                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                                    </svg>
+                                    <span className="z-10">Initiate Registration</span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         );
     }

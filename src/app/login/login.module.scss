@@ -1,0 +1,261 @@
+@use "../../styles/theme" as *;
+
+// CUSTOM COLORS BASED ON YOUR UPLOADED REFERENCES
+$acid-green: rgba(106, 61, 202, 0.3); // From Lando Norris Helmet/Branding
+$dark-olive: #131410; // Main background
+$card-bg: indigo; // Slightly lighter olive for contrast
+$border-white: rgba(255, 255, 255, 0.1);
+
+.authWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  // background-color: $dark-olive;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  color: black;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  gap: 80px;
+  z-index: 10;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.infoSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .heroText {
+    h1 {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+
+      span {
+        color: $acid-green;
+      }
+
+      .italic {
+        font-family: serif; // Use 'Playfair Display' if available
+        font-style: italic;
+        font-weight: 300;
+        text-transform: lowercase;
+      }
+    }
+
+    p {
+      margin-top: 24px;
+      color: black;
+      max-width: 380px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Demo Credential Snippet
+.demoBox {
+  margin-top: 40px;
+  padding: 24px;
+  border: 1px dashed rgba($acid-green, 0.3);
+  background: rgba($acid-green, 0.02);
+  width: fit-content;
+
+  .demoLabel {
+    display: block;
+    font-size: 0.65rem;
+    color: $acid-green;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+
+  .demoItem {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: white;
+    margin-bottom: 4px;
+
+    span {
+      color: white;
+      margin-right: 8px;
+    }
+  }
+}
+
+.formCard {
+  background: $card-bg;
+  padding: 60px;
+  border: 1px solid $border-white;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid $acid-green;
+    border-left: 2px solid $acid-green;
+  }
+
+  .header {
+    margin-bottom: 40px;
+
+    h2 {
+      font-size: 1.75rem;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    p {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 5px;
+    }
+  }
+}
+
+.inputGroup {
+  margin-bottom: 25px;
+
+  label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 700;
+  }
+
+  input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 0;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    &:focus {
+      outline: none;
+      border-bottom-color: $acid-green;
+      padding-left: 10px; // Subtle shift effect
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 18px;
+  background-color: $acid-green;
+  color: black;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba($acid-green, 0.3);
+  }
+
+  &:disabled {
+    background: #444;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.googleBtn {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  border: 1px solid $border-white;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: white;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 40px 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $border-white;
+  }
+
+  span {
+    padding: 0 15px;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+}
+
+.footerLink {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+
+  a {
+    color: $acid-green;
+    text-decoration: none;
+    font-weight: 800;
+    margin-left: 5px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
