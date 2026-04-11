@@ -157,8 +157,13 @@ export default function ChatWindow({ recipientId, onClose }: ChatWindowProps) {
       senderId: currentUserId,
       receiverId: recipientId,
       message: inputValue,
-      image: imageUrl
+      image: imageUrl,
+      createdAt: new Date().toISOString(),
+      _id: `temp-${Date.now()}`
     };
+
+    // INSTANT FEEDBACK: Add to screen before server round-trip
+    setMessages(prev => [...prev, messageData]);
 
     socket.emit("send-message", messageData);
     setInputValue("");
@@ -170,7 +175,13 @@ export default function ChatWindow({ recipientId, onClose }: ChatWindowProps) {
 
     const handleSent = (message: Message) => {
       if (message.receiverId === recipientId) {
-        setMessages(prev => [...prev, message]);
+        // Replace temp message with real DB message (to get official _id)
+        setMessages(prev => {
+          const filtered = prev.filter(m => !m._id.toString().startsWith("temp-"));
+          // Check if message already exists (prevent duplicates if new-message also fires)
+          if (prev.find(m => m._id === message._id)) return prev;
+          return [...filtered, message];
+        });
       }
     };
 

@@ -28,11 +28,21 @@ interface GlobalContextType {
     setActiveChat: (email: string | null) => void;
     refreshUserData: () => Promise<void>;
     fetchAllUsers: () => Promise<void>;
+    
+    // Notification & Socket Additions
+    notifications: any[];
+    unreadCount: number;
+    fetchNotifications: (email: string) => Promise<void>;
+    markNotificationsRead: () => Promise<void>;
+    socket: Socket | null;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:10001";
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:10001";
+import { io, Socket } from 'socket.io-client';
+import { toast } from "sonner";
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const { data: session, status } = useSession();
@@ -40,8 +50,36 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const [allUsers, setAllUsers] = useState<IUserData[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
     const [activeChat, setActiveChat] = useState<string | null>(null);
+
+    // Notification states
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [socket, setSocket] = useState<Socket | null>(null);
+    
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+
+    // Fetch Notifications
+    const fetchNotifications = async (email: string) => {
+        try {
+            const res = await axios.get(`${BACKEND_URL}/api/notification/get/${email}`);
+            if (res.data.success) {
+                setNotifications(res.data.notifications);
+            }
+        } catch (err) {
+            console.error("Failed to fetch notifications:", err);
+        }
+    };
+
+    // Mark as read
+    const markNotificationsRead = async () => {
+        if (!session?.user?.email) return;
+        try {
+            setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+            await axios.patch(`${BACKEND_URL}/api/notification/read`, { email: session.user.email });
+        } catch (err) {
+            console.error("Failed to mark notifications read:", err);
+        }
+    };
 
     // Fetch specific user data by email
     const fetchUserFullData = async (email: string) => {
@@ -81,14 +119,42 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    // Auto-fetch when session is authenticated
+    // Auto-fetch data and init socket when session is authenticated
     useEffect(() => {
         if (status === "authenticated" && session?.user?.email) {
             fetchUserFullData(session.user.email);
-            fetchAllUsers(); // Fetch all users for community/admin view
+            fetchAllUsers(); 
+            fetchNotifications(session.user.email);
+
+            // Initialize global socket for notifications
+            const newSocket = io(SOCKET_URL, {
+                transports: ['websocket'],
+            });
+
+            newSocket.on('connect', () => {
+                newSocket.emit('join-user', session.user?.email); // Use email as room ID
+            });
+
+            newSocket.on('new-notification', (notification) => {
+                setNotifications(prev => [notification, ...prev]);
+                // Trigger toast on new notification!
+                toast.success(notification.title || "New Notification", {
+                    description: notification.content,
+                    duration: 4000,
+                });
+            });
+
+            setSocket(newSocket);
+
+            return () => {
+                newSocket.disconnect();
+                setSocket(null);
+            };
+
         } else if (status === "unauthenticated") {
             setUserData(null);
-            fetchAllUsers(); // Still fetch all users for public community view if needed
+            setNotifications([]);
+            fetchAllUsers(); 
         }
     }, [session, status]);
 
@@ -102,7 +168,12 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 activeChat,
                 setActiveChat,
                 refreshUserData,
-                fetchAllUsers
+                fetchAllUsers,
+                notifications,
+                unreadCount,
+                fetchNotifications,
+                markNotificationsRead,
+                socket
             }}
         >
             {children}

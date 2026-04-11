@@ -8,6 +8,7 @@ import { MessageSquare, Heart, Share2, MoreHorizontal, Image as ImageIcon, Loade
 import axios from "axios";
 import Image from "next/image";
 import { toast } from "sonner";
+import { NotificationBell } from "@/components/Community/NotificationBell";
 import { useGlobalContext } from "@/context/globalContext";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:10000";
@@ -48,7 +49,7 @@ export default function CommunityPage() {
   const [commentingId, setCommentingId] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { allUsers } = useGlobalContext()
+  const { allUsers, socket } = useGlobalContext()
   const currentUserData = allUsers?.find(
     (user: any) => user.email === session?.user?.email
   );
@@ -161,6 +162,18 @@ export default function CommunityPage() {
 
       if (res.data.success) {
         setPosts(prev => prev.map(p => p._id === postId ? { ...p, likes: res.data.likes } : p));
+        
+        // Notification Delivery
+        const post = posts.find(p => p._id === postId);
+        if (post && post.author.email !== session.user.email) {
+           socket?.emit("send-notification", {
+              recipientId: post.author.email,
+              senderId: session.user.email,
+              type: "LIKE",
+              title: "Signal Acknowledged",
+              content: `${session.user.name || "A user"} resonated with your telemetry.`
+           });
+        }
       }
     } catch {
       toast.error("INTERACTION_FAILED: Pulse lost");
@@ -192,6 +205,18 @@ export default function CommunityPage() {
         setCommentText("");
         setCommentingId(null);
         toast.success("DATA_INJECTED: Comment added");
+
+        // Notification Delivery
+        const post = posts.find(p => p._id === postId);
+        if (post && post.author.email !== session.user.email) {
+           socket?.emit("send-notification", {
+              recipientId: post.author.email,
+              senderId: session.user.email,
+              type: "COMMENT",
+              title: "Incoming Transmission",
+              content: `${session.user.name || "A user"} commented on your log.`
+           });
+        }
       }
     } catch {
       toast.error("TRANSMISSION_FAILED: Packet lost");
@@ -212,11 +237,14 @@ export default function CommunityPage() {
           </p>
         </div>
 
-        {/* Filter / Sort Button */}
-        <button className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.05] rounded-xl hover:bg-white/[0.08] hover:border-indigo-500/30 transition-all text-xs font-jetbrains-mono uppercase text-white/60 hover:text-white">
-          <span>Sort By:</span>
-          <span className="text-indigo-500">Latest</span>
-        </button>
+        {/* Filter / Sort Button & Notifications */}
+        <div className="flex items-center gap-4">
+          <NotificationBell />
+          <button className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.05] rounded-xl hover:bg-white/[0.08] hover:border-indigo-500/30 transition-all text-xs font-jetbrains-mono uppercase text-white/60 hover:text-white">
+            <span>Sort By:</span>
+            <span className="text-indigo-500">Latest</span>
+          </button>
+        </div>
       </div>
 
       {/* Post Input Card */}
