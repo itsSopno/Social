@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Package, Users, Home, Bell, MessageSquare, Plus, Search } from "lucide-react";
+import { Package, Users, Home, Bell, MessageSquare, Plus, Search, Settings } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -27,6 +27,7 @@ export default function Navbari() {
         { name: "Users", href: "/Community/discover", icon: <Users size={20} />, id: "search" },
         { name: "Market", href: "/Store", icon: <Package size={20} />, id: "market" },
         { name: "Profile", href: "/Community/Cprofile", icon: <Users size={20} />, id: "profile" },
+        { name: "Settings", href: "/Community/settings", icon: <Settings size={20} />, id: "settings" },
     ];
 
     if (!mounted) return null;

@@ -187,6 +187,45 @@ export default function ProfilePage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Friends List for Personal Profile */}
+                            <div className="pt-8 border-t border-white/5">
+                                <h3 className="font-bebas text-2xl text-white tracking-widest uppercase mb-6 flex items-center justify-between">
+                                    Uplinked_Nodes 
+                                    <span className="text-[10px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded-md font-jetbrains-mono">
+                                        {currentUserData.friends?.length || 0}
+                                    </span>
+                                </h3>
+                                
+                                <div className="grid grid-cols-4 gap-3">
+                                    {currentUserData.friends?.map((friendEmail) => {
+                                        const friendObj = allUsers.find(u => u.email === friendEmail);
+                                        if (!friendObj) return null;
+                                        return (
+                                            <Link 
+                                                key={friendEmail} 
+                                                href={`/Community/Profile/${encodeURIComponent(friendEmail)}`}
+                                                className="group/friend relative"
+                                                title={friendObj.name}
+                                            >
+                                                <div className="aspect-square rounded-xl overflow-hidden border border-white/10 group-hover/friend:border-indigo-500/50 transition-all">
+                                                    <img 
+                                                        src={friendObj.image || `https://ui-avatars.com/api/?name=${friendObj.name}&background=6366f1&color=050505`} 
+                                                        alt={friendObj.name}
+                                                        className="w-full h-full object-cover grayscale group-hover/friend:grayscale-0 transition-all"
+                                                    />
+                                                </div>
+                                                <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-indigo-500 rounded-full border-2 border-[#050505] opacity-0 group-hover/friend:opacity-100 transition-opacity" />
+                                            </Link>
+                                        );
+                                    })}
+                                    {(!currentUserData.friends || currentUserData.friends.length === 0) && (
+                                        <p className="col-span-full font-jetbrains-mono text-[8px] text-white/20 uppercase tracking-[2px] text-center py-4 border border-dashed border-white/5 rounded-2xl">
+                                            No active uplinks yet.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>

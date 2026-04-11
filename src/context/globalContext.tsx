@@ -150,6 +150,12 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
             newSocket.on('new-notification', (notification) => {
                 setNotifications(prev => [notification, ...prev]);
+                
+                // If the notification indicates a friend request was accepted, refresh our data
+                if (notification.title === "Request Accepted") {
+                    refreshUserData();
+                }
+
                 // Trigger toast on new notification!
                 toast.success(notification.title || "New Notification", {
                     description: notification.content,
