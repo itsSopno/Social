@@ -20,7 +20,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://t-mark-4.vercel.app/api/register", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:10001"}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

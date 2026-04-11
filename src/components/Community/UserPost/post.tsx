@@ -20,7 +20,7 @@ const MyArchive = () => {
                 const email = session?.user?.email;
                 if (!email) return;
 
-                const res = await axios.get(`https://t-mark-4.onrender.com/api/post/get/${email}`);
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:10001"}/api/post/get/${email}`);
 
                 if (res.data.success) {
                     setPosts(res.data.posts);
@@ -37,14 +37,18 @@ const MyArchive = () => {
 
     // 2. Delete logic
     const confirmDelete = async () => {
+        if (!selectedPostId) return;
         try {
-            const res = await axios.delete(`https://t-mark-4.onrender.com/api/post/delete/${selectedPostId}`);
+            setDeleting(true);
+            const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:10001"}/api/post/delete/${selectedPostId}`);
             if (res.data.success) {
                 setPosts(posts.filter((post: any) => post._id !== selectedPostId));
                 setIsModalOpen(false);
             }
         } catch (error) {
             console.error("TERMINATION_FAILED: Node removal error", error);
+        } finally {
+            setDeleting(false);
         }
     };
 
