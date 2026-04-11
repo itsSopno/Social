@@ -3,10 +3,8 @@ import { Inter, Bebas_Neue, Playfair_Display, Space_Grotesk, Geist, JetBrains_Mo
 import "../styles/tailwind.css";
 import "../styles/globals.scss";
 import { SessionProvider } from "next-auth/react";
-import Navbar from "@/components/Navbar/Navbar";
 
 import SmoothScroll from "@/components/SmoothScroll/SmoothScroll";
-import AIChat from "@/components/AIChat/AIChat";
 import LoadingWrapper from "@/components/LoadingWrapper/LoadingWrapper";
 import { ToasterProvider } from "@/components/providers/ToasterProvider";
 import { GlobalProvider } from "@/context/globalContext";
@@ -39,9 +37,7 @@ export default function RootLayout({
             <LoadingWrapper>
               <SmoothScroll>
                 <div className="app-wrapper">
-                  <Navbar />
                   <main className="main-content">{children}</main>
-                  <AIChat />
                 </div>
               </SmoothScroll>
             </LoadingWrapper>
