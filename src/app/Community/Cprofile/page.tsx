@@ -191,7 +191,7 @@ export default function ProfilePage() {
                             {/* Friends List for Personal Profile */}
                             <div className="pt-8 border-t border-white/5">
                                 <h3 className="font-bebas text-2xl text-white tracking-widest uppercase mb-6 flex items-center justify-between">
-                                    Uplinked_Nodes 
+                                    Friend List
                                     <span className="text-[10px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded-md font-jetbrains-mono">
                                         {currentUserData.friends?.length || 0}
                                     </span>
