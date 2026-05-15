@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity } from "lucide-react";
+import { Activity, Settings, LayoutGrid } from "lucide-react";
+import Link from "next/link";
 import Navbari from "./Navbari";
 import MagneticCard from "./MagneticCard";
 import ChatSidebar from "./ChatSidebar";
 import ChatWindow from "./ChatWindow";
+import { NotificationBell } from "./NotificationBell";
 import { useGlobalContext } from "@/context/globalContext";
 
 export default function CommunityLayout({
@@ -69,65 +71,70 @@ export default function CommunityLayout({
           </motion.div>
 
           {/* RIGHT SIDE: Activity Panel & Messaging */}
-          <aside className={`${showMobileChat ? "block" : "hidden"} xl:block xl:col-span-4 space-y-8 w-full pt-10 xl:pt-0`}>
+          <aside className={`${showMobileChat ? "block" : "hidden"} xl:block xl:col-span-4 space-y-12 w-full pt-10 xl:pt-0 sticky top-32 h-fit`}>
             
-            {/* Mobile Header for Chat Sidebar */}
-            {showMobileChat && (
-              <div className="flex items-center justify-between mb-8 xl:hidden">
-                <h4 className="font-bebas text-3xl tracking-widest text-indigo-500 italic uppercase">COMM_TERMINAL</h4>
-                <button 
-                  onClick={() => setShowMobileChat(false)}
-                  className="px-6 py-3 bg-muted/10 border border-border/40 rounded-2xl text-[10px] font-jetbrains-mono uppercase tracking-widest"
-                >
-                  Close_Term
-                </button>
+            {/* System Control Panel */}
+            <div className="bg-card/20 border border-border/40 rounded-[48px] p-10 backdrop-blur-3xl shadow-xl relative group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-700" />
+              <div className="flex items-center justify-between mb-10">
+                 <h3 className="font-bebas text-3xl tracking-widest text-foreground/60 italic uppercase">System_Control</h3>
+                 <Link href="/Community/settings" className="p-3 bg-muted/10 rounded-xl hover:text-indigo-500 transition-colors border border-border/40">
+                    <Settings size={20} />
+                 </Link>
               </div>
-            )}
-            
-            {/* System Status Tracker */}
-            <MagneticCard delay={0.4}>
-              <div className="bg-card/20 border border-border/40 p-8 rounded-[40px] backdrop-blur-3xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-500" />
-                
-                <div className="flex items-center gap-4 mb-8">
-                  <Activity className="text-indigo-500" size={20} />
-                  <h4 className="font-bebas tracking-[3px] text-foreground/50 text-sm uppercase italic">Active_Nodes</h4>
-                </div>
-                
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <motion.div 
-                      key={i} 
-                      whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-4 rounded-3xl hover:bg-muted/10 border border-transparent hover:border-border/40 transition-all cursor-crosshair"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={`w-2.5 h-2.5 rounded-sm ${i === 1 ? 'bg-indigo-500 animate-pulse shadow-[0_0_10px_rgba(99,102,241,0.6)]' : 'bg-muted-foreground/20'}`} />
-                        <span className="text-[11px] font-jetbrains-mono text-foreground/70 uppercase tracking-widest font-bold">Uplink_Relay_0{i}</span>
-                      </div>
-                      <span className="text-[10px] font-jetbrains-mono text-indigo-500/60 font-bold">{100 - i * 5}ms</span>
-                    </motion.div>
+              
+              <div className="space-y-6">
+                 <NotificationBell />
+                 <div className="w-full h-[1px] bg-border/20" />
+                 <button className="w-full flex items-center justify-between px-6 py-4 bg-muted/5 border border-border/40 rounded-2xl hover:bg-muted/10 transition-all group/btn">
+                    <span className="font-jetbrains-mono text-[10px] text-foreground/40 uppercase tracking-widest font-bold">Node_Filter</span>
+                    <span className="text-indigo-500 text-[10px] font-jetbrains-mono font-bold tracking-widest">LATEST</span>
+                 </button>
+              </div>
+            </div>
+
+            {/* Global Intelligence Section */}
+            <div className="bg-card/20 border border-border/40 rounded-[48px] p-10 backdrop-blur-3xl shadow-xl relative group">
+               <div className="flex items-center gap-4 mb-10">
+                  <LayoutGrid className="text-indigo-500" size={24} />
+                  <h3 className="font-bebas text-3xl tracking-widest text-foreground/90 italic uppercase">Global_Intelligence</h3>
+               </div>
+               <div className="space-y-8">
+                  {[
+                    { tag: "SINNERS_TECH", posts: "12.4k", trend: "+244%" },
+                    { tag: "UPLINK_STABLE", posts: "8.1k", trend: "+12%" },
+                    { tag: "QUANTUM_SYNC", posts: "5.5k", trend: "+89%" }
+                  ].map((item, i) => (
+                    <div key={i} className="group cursor-pointer">
+                       <p className="font-jetbrains-mono text-[9px] text-indigo-500/60 uppercase tracking-widest font-bold mb-1 italic">T_NODE_STREAM</p>
+                       <h5 className="font-bebas text-2xl tracking-widest group-hover:text-indigo-500 transition-colors">#{item.tag}</h5>
+                       <div className="flex items-center justify-between mt-2">
+                          <span className="text-[10px] font-jetbrains-mono text-foreground/30 uppercase tracking-widest">{item.posts} Nodes</span>
+                          <span className="text-[9px] font-jetbrains-mono text-green-500 font-bold">{item.trend}</span>
+                       </div>
+                    </div>
                   ))}
-                </div>
-              </div>
-            </MagneticCard>
+               </div>
+            </div>
 
-            {/* Time / System Status */}
-            <MagneticCard delay={0.5}>
-              <div className="bg-card/20 border border-border/40 p-8 rounded-[40px] backdrop-blur-3xl flex flex-col items-center justify-center text-center">
-                 <span className="text-[9px] font-jetbrains-mono text-foreground/40 tracking-[6px] uppercase italic leading-none">
-                  Telemetry_Sync_Active
-                </span>
-                <span className="font-bebas text-3xl text-indigo-500 tracking-[5px] mt-2 italic">
-                  {currentTime}
-                </span>
+            {/* Messaging Section */}
+            <div className="space-y-6">
+              <div className="px-6 flex items-center justify-between">
+                 <h3 className="font-bebas text-2xl tracking-widest text-foreground/40 italic uppercase">Comm_Terminal</h3>
+                 <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
               </div>
-            </MagneticCard>
-
-            {/* Direct Messaging / Recent Chats */}
-            <div className="pt-2">
               <ChatSidebar onSelectChat={(id: string) => setActiveChat(id)} />
             </div>
+
+            {/* Decorative Technical Footer */}
+            <div className="pt-10 opacity-20 pb-10">
+               <p className="font-jetbrains-mono text-[8px] uppercase tracking-[8px] leading-loose text-center">
+                  GLOBAL_NETWORK_SYNC_STABLE<br/>
+                  SINNERS_SYSTEMS_v1.0.4<br/>
+                  &copy; 2026_OFFICIAL_CORP
+               </p>
+            </div>
+
           </aside>
         </main>
       </div>

@@ -1,141 +1,141 @@
-
 "use client";
-import React, { useEffect, useRef, useState, useMemo } from "react";
+
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import Image from "next/image";
-import img1 from './Sinners_ hero.png'
-import img2 from './Sinners_ 2nd.png'
-import img3 from './3rd.png'
-import img4 from './Sinners_3rd.png'
 
-
-const OchiComponentLoader = ({ onComplete }: { onComplete: () => void }) => {
+const SinnersSystemLoader = ({ onComplete }: { onComplete: () => void }) => {
     const [percent, setPercent] = useState(0);
     const loaderRef = useRef<HTMLDivElement>(null);
-
-
-    const loaderImages = useMemo(() => [
-        { id: 1, src: img4, alt: "Archive 01" },
-        { id: 2, src: img3, alt: "Archive 02" },
-        { id: 3, src: img2, alt: "Archive 03" },
-        { id: 4, src: img1, alt: "Studio Sinners" },
-    ], []);
+    const textRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-
-        const style = document.createElement("style");
-        style.textContent = `
-            .perspective-2000 { perspective: 2000px; }
-            .loader-card { 
-                will-change: transform, opacity; 
-                backface-visibility: hidden;
-                transform: translateZ(0); 
-            }
-        `;
-        document.head.appendChild(style);
-
-
         const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 defaults: { ease: "expo.inOut", force3D: true }
             });
 
-
+            // 1. Percentage Counter Logic
             tl.to({}, {
-                duration: 3,
+                duration: 2.5,
                 onUpdate: function () {
                     const p = Math.round(this.progress() * 100);
-
-                    setPercent((prev) => (prev !== p ? p : prev));
+                    setPercent(p);
                 },
             });
 
-
-            tl.fromTo(".loader-card",
-                { y: "100vh", rotationX: 10, opacity: 0 },
-                {
-                    y: (i) => `${i * -5}px`,
-                    rotationX: 0,
-                    opacity: 1,
-                    duration: 1.2,
-                    stagger: 0.25,
-                },
+            // 2. Kinetic Typography Entry
+            tl.fromTo(".char", 
+                { y: 150, skewY: 10, opacity: 0 },
+                { 
+                    y: 0, 
+                    skewY: 0, 
+                    opacity: 1, 
+                    duration: 1.5, 
+                    stagger: 0.05,
+                    ease: "expo.out" 
+                }, 
                 0
             );
 
+            tl.fromTo(".sub-text",
+                { opacity: 0, y: 20 },
+                { opacity: 0.4, y: 0, duration: 1, ease: "power2.out" },
+                0.8
+            );
 
-            tl.to(".loader-card:not(:last-child)", {
-                y: "100vh",
+            tl.fromTo(progressRef.current,
+                { scaleX: 0 },
+                { scaleX: 1, duration: 2.5, ease: "none" },
+                0
+            );
+
+            // 3. Exit Sequence
+            tl.to(".char", {
+                y: -150,
+                skewY: -10,
                 opacity: 0,
-                duration: 0.8,
-                stagger: 0.04,
+                duration: 1,
+                stagger: 0.03,
+                ease: "expo.in"
             }, "+=0.2");
 
-            tl.to(".loader-card:last-child", {
-                width: "100vw",
-                height: "100vh",
-                borderRadius: "0px",
-                duration: 1,
-            }, "-=0.5");
+            tl.to(".sub-text", {
+                opacity: 0,
+                duration: 0.5
+            }, "-=0.8");
 
             tl.to(loaderRef.current, {
                 opacity: 0,
-                duration: 0.4,
+                duration: 0.8,
                 onComplete: () => {
-
                     if (loaderRef.current) {
-                        loaderRef.current.style.pointerEvents = "none";
                         loaderRef.current.style.display = "none";
                     }
                     onComplete();
-                },
-            }, "+=0.1");
+                }
+            }, "-=0.2");
 
         }, loaderRef);
 
-        return () => {
-            ctx.revert();
-            style.remove();
-        };
+        return () => ctx.revert();
     }, [onComplete]);
 
-    return (
-        <div ref={loaderRef} className="fixed inset-0 z-[99999] bg-black overflow-hidden perspective-2000 flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center">
-                {loaderImages.map((image, index) => (
-                    <div
-                        key={image.id}
-                        className="loader-card absolute w-[80%] h-[50%] md:w-[60%] md:h-[70%] overflow-hidden rounded-[20px] md:rounded-[40px]"
-                        style={{ zIndex: index + 1 }}
-                    >
-                        <div className="relative w-full h-full p-4 md:p-12">
-                            <Image
-                                src={image.src}
-                                alt={image.alt}
-                                fill
-                                sizes="(max-width: 768px) 80vw, 60vw"
-                                className="object-contain"
-                                priority={index >= loaderImages.length - 2}
-                                quality={60}
-                            />
-                        </div>
+    const title = "SINNERS";
 
-                        {index === loaderImages.length - 1 && (
-                            <div className="absolute bottom-6 right-8 md:bottom-12 md:right-12 z-[100]">
-                                <div className="flex flex-col items-end">
-                                    <span className="text-[10px] font-mono tracking-[4px] text-[#D9FF00] uppercase mb-1 opacity-50">
-                                    </span>
-                                    <div className="font-bebas text-[20vw] md:text-[10vw] leading-none text-indigo-500/20 tracking-tighter shadow-2xl">
-                                        {percent}%
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+    return (
+        <div 
+            ref={loaderRef} 
+            className="fixed inset-0 z-[99999] bg-background overflow-hidden flex flex-col items-center justify-center p-6"
+        >
+            {/* Background Decorative Grid (Subtle) */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:40px_40px]" />
+            
+            <div className="relative flex flex-col items-center max-w-4xl w-full">
+                {/* Main Kinetic Typography */}
+                <div ref={textRef} className="overflow-hidden mb-4">
+                    <h1 className="font-bebas text-[18vw] md:text-[12vw] leading-none tracking-[-0.05em] text-foreground flex italic">
+                        {title.split("").map((char, index) => (
+                            <span key={index} className="char inline-block min-w-[0.2em]">
+                                {char === " " ? "\u00A0" : char}
+                            </span>
+                        ))}
+                    </h1>
+                </div>
+
+                {/* Status Telemetry */}
+                <div className="flex flex-col items-center w-full">
+                    <p className="sub-text font-jetbrains-mono text-[10px] md:text-sm text-foreground/40 uppercase tracking-[0.5em] mb-8 font-bold text-center">
+                        STAT: ESTABLISHING_ENCRYPTED_UPLINK...
+                    </p>
+                    
+                    {/* Minimal Progress Bar */}
+                    <div className="w-full h-[1px] bg-muted/20 relative overflow-hidden max-w-md">
+                        <div 
+                            ref={progressRef}
+                            className="absolute inset-0 bg-indigo-500 origin-left"
+                        />
                     </div>
-                ))}
+                    
+                    {/* Big Counter */}
+                    <div className="mt-6 font-bebas text-4xl md:text-6xl text-foreground/10 tracking-widest text-center italic">
+                        {percent}%
+                    </div>
+                </div>
+            </div>
+
+            {/* Corner Decorative Elements */}
+            <div className="absolute top-10 left-10 sub-text font-jetbrains-mono text-[8px] text-foreground/20 uppercase tracking-widest hidden md:block">
+                NODE_ID: 0xSF-99<br/>
+                SYNC_ACTIVE
+            </div>
+            
+            <div className="absolute bottom-10 right-10 sub-text font-jetbrains-mono text-[8px] text-foreground/20 uppercase tracking-widest hidden md:block text-right">
+                STBL_V2.0.4<br/>
+                SINNERS_DIGITAL_HUB
             </div>
         </div>
     );
 };
 
-export default OchiComponentLoader;
+export default SinnersSystemLoader;

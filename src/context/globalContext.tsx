@@ -21,6 +21,7 @@ export interface IUserData {
     address: string;
     image: string;
     Bio: string;
+    coverImage?: string;
     friends: string[];
     friendRequests: IFriendRequest[];
     createdAt?: string;

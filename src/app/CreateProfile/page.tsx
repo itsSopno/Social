@@ -34,6 +34,7 @@ export default function CreateProfilePage() {
         phoneNumber: "",
         address: "",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=neutral",
+        coverImage: "",
         Bio: "",
     });
 
@@ -78,6 +79,37 @@ export default function CreateProfilePage() {
         } catch (error) {
             console.error("Upload error:", error);
             toast.error("V-Sync failed: Could not upload image");
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleCoverUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dhkdtyjsr";
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+        if (!uploadPreset) {
+            toast.error("Cloudinary upload preset missing.");
+            return;
+        }
+
+        setUploading(true);
+        const imgFormData = new FormData();
+        imgFormData.append("file", file);
+        imgFormData.append("upload_preset", uploadPreset);
+
+        try {
+            const res = await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                imgFormData
+            );
+            setFormData({ ...formData, coverImage: res.data.secure_url });
+            toast.success("Environmental backdrop updated");
+        } catch (error) {
+            toast.error("V-Sync failed: Cover upload error");
         } finally {
             setUploading(false);
         }
@@ -192,9 +224,29 @@ export default function CreateProfilePage() {
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                 >
-                    <div className="relative bg-card/20 border border-border rounded-[50px] backdrop-blur-3xl p-10 md:p-20 lg:p-24 shadow-2xl overflow-hidden min-h-[600px]">
+                    <div className="relative bg-card/20 border border-border rounded-[50px] backdrop-blur-3xl shadow-2xl overflow-hidden min-h-[600px]">
                         
-                        <div className="flex flex-col lg:flex-row gap-20 lg:gap-32 items-center lg:items-start">
+                        {/* Cinematic Cover Upload Section */}
+                        <div className="relative w-full h-64 md:h-80 bg-muted/10 group/cover">
+                            {formData.coverImage ? (
+                                <Image 
+                                    src={formData.coverImage} 
+                                    alt="Cover" 
+                                    fill 
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center border-b border-border/40">
+                                    <p className="font-jetbrains-mono text-[10px] text-muted-foreground/30 uppercase tracking-[8px]">No_Backdrop_Detected</p>
+                                </div>
+                            )}
+                            <Label htmlFor="cover-upload" className="absolute bottom-6 right-6 px-6 py-3 bg-background/60 backdrop-blur-md border border-border/40 rounded-xl text-[10px] font-jetbrains-mono uppercase tracking-[2px] cursor-pointer hover:bg-background/80 transition-all z-20 flex items-center gap-3">
+                                <UploadCloud size={14} /> Update_Environmental_Uplink
+                                <input id="cover-upload" type="file" className="hidden" onChange={handleCoverUpload} accept="image/*" />
+                            </Label>
+                        </div>
+
+                        <div className="flex flex-col lg:flex-row gap-20 lg:gap-32 items-center lg:items-start p-10 md:p-20 lg:p-24 !pt-12">
                             {/* Profile Sidebar */}
                             <div className="w-full lg:w-1/3 flex flex-col items-center gap-12">
                                 <div className="relative group/avatar">

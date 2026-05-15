@@ -58,18 +58,7 @@ export default function ChatSidebar({ onSelectChat }: { onSelectChat: (userId: s
       <div className="bg-card/20 border border-border/40 p-8 rounded-[40px] backdrop-blur-3xl relative overflow-hidden group min-h-[450px]">
         <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors duration-500" />
         
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <MessageSquare className="text-indigo-500" size={20} />
-            <h4 className="font-bebas tracking-[3px] text-foreground/50 text-sm uppercase italic">Active_Terminals</h4>
-          </div>
-          <div className="flex items-center gap-2.5">
-             <Circle size={10} className="fill-indigo-500 text-indigo-500 animate-pulse" />
-             <span className="text-[10px] font-jetbrains-mono text-foreground/40 uppercase tracking-widest font-bold">Live</span>
-          </div>
-        </div>
-
-        <div className="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
+        <div className="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2 mt-2">
           {loading ? (
             <div className="text-center py-16">
               <div className="w-8 h-8 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mx-auto" />
